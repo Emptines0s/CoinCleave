@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main-body">
+    <ul class="accordion" data-accordion="open">
+      <li>
+        <div class="accordion-head", id="1">Как подключить аккаунт биржы Binance?</div>
+        <div class="accordion-body">API позволяет подключаться к серверам Binance с помощью различных языков программирования.<br>Получаемые с Binance данные можно использовать во внешних приложениях.<br>С помощью подключения к API можно просматривать информацию о кошельке, включая данные о транзакциях, совершать сделки, вводить и выводить средства через сторонние программы.</div>
+      </li>
+      <li>
+        <div class="accordion-head", id="2">Head-2</div>
+        <div class="accordion-body">Body-2</div>
+      </li>
+        <li>
+        <div class="accordion-head", id="3">Head-3</div>
+        <div class="accordion-body">Body-3</div>
+      </li>
+      <li>
+        <div class="accordion-head", id="4">Head-4</div>
+        <div class="accordion-body">Body-4</div>
+      </li>
+      <li>
+        <div class="accordion-head", id="5">Head-5</div>
+        <div class="accordion-body">Body-5</div>
+      </li>
+    </ul>
+</div>
+    <script type="text/javascript">
+        var target = {{ target }}
+    </script>
+    <script src="{{url_for('static', filename='accordion.js')}}"></script>
+{% endblock %}

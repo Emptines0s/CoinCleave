@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Привет, это боты!</h1>
+    <p id="testid">TEST</p>
+    <div class="bots-list">
+        {% for bot in bot_list %}
+            <div class="line", id="{{ bot.id }}">
+                <div class="unit">{{ bot.connect.exchange }}</div>
+                <div class="unit">{{ bot.strategy.name }}</div>
+                <div class="unit">{{ bot.ticker }}</div>
+                <div class="unit">{{ bot.deposit }}</div>
+                <div class="unit">{{ bot.pnl }}</div>
+                <div class="unit">{{ bot.state }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="trade_chart">
+        <canvas id="trade_chart"></canvas>
+    </div>
+    <div class="bot_buttons">
+        <button class="start_bot">Start Bot</button>
+        <button class="soft_stop">Soft Stop</button>
+        <button class="hard_stop">Hard Stop</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='bots.js')}}"></script>
+{% endblock %}

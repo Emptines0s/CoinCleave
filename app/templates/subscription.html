@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main-body">
+    <div class="time">
+        Подписка истечёт через:<br>{{ subscription_time.days }}&nbsp;дней&nbsp;
+        {{ subscription_time.seconds // 3600 }}&nbsp;часов&nbsp;{{ subscription_time.seconds // 60 }}&nbsp;минут
+    </div>
+    <div class="tariffs">
+        <div class="_30d-gradient">
+            <div class="tariff-main">
+                <div class="tariff-time">30 дней</div>
+                <div class="tariff-price">600 руб.</div>
+            </div>
+        </div>
+        <div class="_60d-gradient">
+            <div class="tariff-main">
+                <p class="tariff-time">60 дней</p>
+                <p class="tariff-price">1200 руб.</p>
+            </div>
+        </div>
+        <div class="_180d-gradient">
+            <div class="tariff-main">
+                <p class="tariff-time">180 дней</p>
+                <p class="tariff-price">3600 руб.</p>
+            </div>
+        </div>
+    </div>
+    <div class="tariff-description">
+    Это определяет выравнивание вдоль главной оси. Это помогает распределять дополнительное свободное пространство, когда либо все гибкие элементы в строке негибкие, либо гибкие, но достигли своего максимального размера. Он также осуществляет некоторый контроль над выравниванием элементов, когда они выходят за пределы строки.
+
+    .container {
+      justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly | start | end | left | right ... + safe | unsafe;
+    }
+    flex-start(по умолчанию): элементы упаковываются к началу flex-направления.
+    flex-end: элементы упаковываются ближе к концу flex-направления.
+    start: предметы упаковываются к началу writing-modeнаправления.
+    end: предметы упаковываются ближе к концу writing-modeнаправления.
+    left: элементы упаковываются по направлению к левому краю контейнера, если это не имеет смысла с flex-direction, тогда он ведет себя как start.
+    right: элементы упаковываются по направлению к правому краю контейнера, если это не имеет смысла с flex-direction, тогда он ведет себя как end.
+    center: элементы располагаются по центру строки
+    space-between: предметы равномерно распределены в очереди; первый элемент находится в начальной строке, последний элемент в конечной строке
+    space-around: элементы равномерно распределены в строке с равным пространством вокруг них. Обратите внимание, что визуально пространства не равны, так как все предметы имеют одинаковое пространство с обеих сторон. Первый элемент будет иметь одну единицу пространства от края контейнера, но две единицы пространства между следующим элементом, потому что этот следующий элемент имеет свой собственный интервал, который применяется.
+    space-evenly: элементы распределяются так, чтобы расстояние между любыми двумя элементами (и расстояние до краев) было одинаковым.
+    Обратите внимание, что поддержка браузером этих значений имеет нюансы. Например, space-betweenв некоторых версиях Edge никогда не было поддержки, а start/end/left/right еще нет в Chrome. У MDN есть подробные графики . Наиболее безопасными значениями являются flex-start, flex-end, и center.
+
+    Есть также два дополнительных ключевых слова, которые вы можете сочетать с этими значениями: safeи unsafe. Использование safeгарантир
+    </div>
+    <div class="purchase_history_container">
+        <button class="purchase_history">История покупок</button>
+    </div>
+    <div class="popup_black_back"></div>
+    <div class="popup_activity_list">
+        <div class="activity_line">
+            <div class="activity_unit">Подписка</div>
+            <div class="activity_unit">Дата покупки</div>
+        </div>
+        <hr>
+        {% for purchase in all_purchase|reverse %}
+            <div class="activity_line">
+                <div class="activity_unit">{{ purchase.name }}</div>
+                <div class="activity_unit">{{ purchase.purchase_time.isoformat(' ', 'seconds') }}</div>
+            </div>
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <script src="{{url_for('static', filename='subscription.js')}}"></script>
+</div>
+{% endblock %}

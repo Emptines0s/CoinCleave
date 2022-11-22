@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main-body">
+    <div class="main-title">Настройки аккаунта</div>
+    <div class="main-description">Для изменения настройки просто нажмите на переключатель,
+        сохранять ничего не нужно.</div>
+    <div class="activity-block-label">Безопасность</div>
+    <div class="activity-block-gradient">
+        <div>Активность аккаунта:</div>
+        {% for activity in activity_list[-5:]|reverse %}
+            <div>{{ activity.last_ip }} &nbsp; {{ activity.last_time.isoformat(' ', 'seconds') }}</div>
+        {% endfor %}
+        <button class="activity_info">Больше</button>
+        <hr>
+        <input type="checkbox", id="ip_alert", checked> Уведомление о новом IP
+        <div>Если на ваш аккаунт будет совершён вход с нового IP, мы отправим вам сообщение на электронную почту.</div>
+        <hr>
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Изменить пароль</button>
+        </form>
+        <div>Для смены пароля будет использоваться привязанная к аккаунту электронная почта.</div>
+    </div>
+    <div class="email-alert-block-label">Уведомления</div>
+    <div class="email-alert-block-gradient">
+        <input type="checkbox", id="subscription_alert", checked> Уведомление о подписках
+        <div>При включении вы будете получать уведомления о ваших истекающих подписках на электронную почту.</div>
+        <hr>
+        <input type="checkbox", id="news_alert", checked> Новостная рассылка
+        <div>При включении вы будете получать новостную рассылку компании на электронную почту.</div>
+        <hr>
+        <input type="checkbox", id="bots_report", checked> Отчёт о ботах
+        <div>При включении вы будете получать отчёт о результатах работы ваших ботов за последние сутки на электронную почту.</div>
+    </div>
+    <div class="popup_black_back"></div>
+    <div class="popup_activity_list">
+        <div class="activity_line">
+            <div class="activity_unit">IP адресс</div>
+            <div class="activity_unit">Дата и время</div>
+        </div>
+        <hr>
+        {% for activity in activity_list|reverse %}
+            <div class="activity_line">
+                <div class="activity_unit">{{ activity.last_ip }}</div>
+                <div class="activity_unit">{{ activity.last_time.isoformat(' ', 'seconds') }}</div>
+            </div>
+            {% if not loop.last %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+    <script>
+        $(document).ready(function() {
+          var True = true;
+          var False = false;
+          $('#ip_alert').prop('checked', {{ user_settings.ip_alert }});
+          $('#subscription_alert').prop('checked', {{ user_settings.subscription_alert }});
+          $('#news_alert').prop('checked', {{ user_settings.news_alert }});
+          $('#bots_report').prop('checked', {{ user_settings.bots_report }});
+
+          $('input:checkbox').click(function() {
+            $.ajax({
+              type: 'POST',
+              url: '/change_setting',
+              data: {'setting_type': this.id, 'setting_value': $(this).is(':checked')},
+              error: function() {
+                  alert('Unexpected error');
+              }
+            });
+          });
+
+          $(document).click(function(e){
+            if($(e.target).closest('.popup_activity_list').length == 0 && $('.popup_activity_list').hasClass("active")) {
+              $('.popup_black_back').fadeOut();
+              $('.popup_activity_list').fadeOut();
+              $('.popup_activity_list').removeClass("active");
+            }
+          });
+
+          $('.activity_info').click(function() {
+            $('.popup_black_back').fadeIn();
+            $('.popup_activity_list').fadeIn(function() {
+              $('.popup_activity_list').addClass("active");
+            });
+          });
+        });
+    </script>
+{% endblock %}

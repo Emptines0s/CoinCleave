@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main-body">
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.connect.label }}<br>
+            {{ form.connect }}<br>
+            {% for error in form.connect.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.strategy.label }}<br>
+            {{ form.strategy }}<br>
+            {% for error in form.strategy.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.ticker.label }}<br>
+            {{ form.ticker }}<br>
+            {% for error in form.ticker.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.deposit.label }}<br>
+            {{ form.deposit }}<br>
+            {% for error in form.deposit.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
+{% endblock %}
