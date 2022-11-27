@@ -18,9 +18,31 @@ $(document).ready(function() {
     $.ajax({
         type: 'POST',
         url: '/buy_subscription',
-        data: {'subscription_name': '30 days', 'subscription_time': 1},
+        data: {'subscription_name': '30 days', 'subscription_time': 30},
         success: function() {
-            alert('Unexpected error');
+            alert('Покупка прошла успешно!');
+        }
+    });
+  });
+
+  $('._60d-gradient').click(function() {
+    $.ajax({
+        type: 'POST',
+        url: '/buy_subscription',
+        data: {'subscription_name': '60 days', 'subscription_time': 60},
+        success: function() {
+            alert('Покупка прошла успешно!');
+        }
+    });
+  });
+
+  $('._180d-gradient').click(function() {
+    $.ajax({
+        type: 'POST',
+        url: '/buy_subscription',
+        data: {'subscription_name': '180 days', 'subscription_time': 180},
+        success: function() {
+            alert('Покупка прошла успешно!');
         }
     });
   });

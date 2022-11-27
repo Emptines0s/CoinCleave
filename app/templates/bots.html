@@ -1,31 +1,70 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Привет, это боты!</h1>
-    <p id="testid">TEST</p>
-    <div class="bots-list">
-        {% for bot in bot_list %}
-            <div class="line", id="{{ bot.id }}">
-                <div class="unit">{{ bot.connect.exchange }}</div>
-                <div class="unit">{{ bot.strategy.name }}</div>
-                <div class="unit">{{ bot.ticker }}</div>
-                <div class="unit">{{ bot.deposit }}</div>
-                <div class="unit">{{ bot.pnl }}</div>
-                <div class="unit">{{ bot.state }}</div>
+<div class="bot-main-body">
+    <div class="work-space">
+        <div class="bot-description-block">
+            <div class="bot-strategy-name-block">
+                <div class="bot-strategy-name"></div>
+                <button type="submit" class="bots-delete">Удалить бота</button>
             </div>
-        {% endfor %}
+            <div class="bot-strategy-description"></div>
+        </div>
+        <div class="chart-block">
+            <div class="trade_chart">
+                <canvas id="trade_chart"></canvas>
+            </div>
+            <div class="bot_buttons">
+                <button class="start_bot">Запуск бота</button>
+                <button class="soft_stop">Мягкая остановка</button>
+                <button class="hard_stop">Жёсткая остановка</button>
+            </div>
+            <div class="bot-buttons-description"></div>
+        </div>
+        <div class="bots-block">
+            <div class="bots-label-block">
+                <div class="bots-label">Список ботов</div>
+                <form action="{{ url_for('create_bot') }}" method="get">
+                    <button type="submit" class="bots-add">Создать бота</button>
+                </form>
+            </div>
+            <div class="line-description">
+                <div class="unit">Биржа</div>
+                <div class="unit">Стратегия</div>
+                <div class="unit">Тикер</div>
+                <div class="unit">Депозит</div>
+                <div class="unit">PNL</div>
+                <div class="unit">Состояние</div>
+            </div>
+            <div class="bots-list">
+                {% for bot in bot_list %}
+                    <div class="line", id="{{ bot.id }}">
+                        <div class="unit">{{ bot.connect.exchange }}</div>
+                        <div class="unit">{{ bot.strategy.name }}</div>
+                        <div class="unit">{{ bot.ticker }}</div>
+                        <div class="unit">{{ bot.deposit }}</div>
+                        <div class="unit">{{ bot.pnl }}</div>
+                        <div class="unit">{{ bot.state }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <div class="trade_chart">
-        <canvas id="trade_chart"></canvas>
-    </div>
-    <div class="bot_buttons">
-        <button class="start_bot">Start Bot</button>
-        <button class="soft_stop">Soft Stop</button>
-        <button class="hard_stop">Hard Stop</button>
+    <div class="trade-block">
+        <div class="trade-block-label">История сделок</div>
+        <div class="line-description">
+            <div class="trade-unit-description">Дата</div>
+            <div class="trade-unit-description">Пара</div>
+            <div class="trade-unit-description">Сторона</div>
+            <div class="trade-unit-description">Цена</div>
+            <div class="trade-unit-description">Количество</div>
+        </div>
+        <div class="trade-history-list"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
             integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
             crossorigin="anonymous"></script>
     <script src="{{url_for('static', filename='bots.js')}}"></script>
+</div>
 {% endblock %}

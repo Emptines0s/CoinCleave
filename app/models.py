@@ -80,8 +80,8 @@ class Connect(db.Model):
 class Strategy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40))
-    description = db.Column(db.String(40))
     interval = db.Column(db.String(3))
+    description = db.Column(db.String(255))
     limit = db.Column(db.Integer)
     bots = db.relationship('Bot', backref='strategy')
     dependencies = db.relationship('Dependence', backref='strategy')
@@ -129,6 +129,12 @@ class Trade(db.Model):
     type = db.Column(db.String(20))
     price = db.Column(db.Float)
     quantity = db.Column(db.Float)
+
+
+class ExchangeTicker(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    exchange = db.Column(db.String(15))
+    ticker = db.Column(db.String(15))
 
 
 @login.user_loader

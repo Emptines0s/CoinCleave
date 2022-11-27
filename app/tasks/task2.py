@@ -4,6 +4,7 @@ from app.models import Trade, Bot
 from app.tasks.celery_conf import celery
 
 
+# task in a separate file for avoid cycle imports: task1 -> trade -> strategy -> task2
 @celery.task(name='core.place_order')
 def place_order(bot_id, side, quantity):
     bot = Bot.query.get(bot_id)
@@ -28,10 +29,3 @@ def place_order(bot_id, side, quantity):
     db.session.add(trade)
     db.session.commit()
     return 'OrderPlaced'
-
-
-@celery.task(name='core.tessta')
-def tessta(bot_id, side, quantity):
-    print('ORDER PLASEDDD1!!')
-    print(side)
-    return 'ORDER PLASEDDD1!!'

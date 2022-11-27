@@ -5,7 +5,7 @@ from binance.spot import Spot
 from binance.error import ClientError, ServerError
 from requests.exceptions import ConnectionError
 from app import app, mail, db
-from app.models import Connect, Subscription, Bot, Candlestick, Activity
+from app.models import Connect, Subscription, Bot, Candlestick, Activity, ExchangeTicker
 from celery.exceptions import SoftTimeLimitExceeded
 from datetime import timedelta
 from sqlalchemy import and_, func
@@ -23,10 +23,12 @@ def run_bot(bot_id):
         if bot.state == 'active':
             return 'AlreadyActive'
         client = Spot()
-        ticker_klines = client.klines(bot.ticker+"USDT", bot.strategy.interval, limit=bot.strategy.limit)
+        ticker_klines = client.klines(bot.ticker, bot.strategy.interval, limit=bot.strategy.limit)
         last_time = db.session.query(func.max(Candlestick.datetime)).filter(
             and_(Candlestick.strategy_id == bot.strategy.id, Candlestick.symbol == bot.ticker)).scalar()
-        if abs(time.time() - last_time) > 5:  # Update candlestick if data is outdated
+        if last_time is None:
+            last_time = 0
+        if abs(time.time() - (last_time / 1000)) > 5:  # Update candlestick if data is outdated
             db.session.query(Candlestick).filter(
                 and_(Candlestick.strategy_id == bot.strategy.id, Candlestick.symbol == bot.ticker)).delete()
             for row in ticker_klines:
@@ -36,13 +38,15 @@ def run_bot(bot_id):
                                           low=row[3],
                                           close=row[4],
                                           volume=row[5],
-                                          symbol=bot.ticker+'USDT')
+                                          symbol=bot.ticker)
                 bot.strategy.candlesticks.append(candlestick)
         for dependence in bot.strategy.dependencies:
-            dependence_klines = client.klines(dependence.coin + "USDT", dependence.interval, limit=dependence.limit)
+            dependence_klines = client.klines(dependence.coin, dependence.interval, limit=dependence.limit)
             last_time = db.session.query(func.max(Candlestick.datetime)).filter(
                 and_(Candlestick.strategy_id == bot.strategy.id, Candlestick.symbol == dependence.coin)).scalar()
-            if abs(time.time() - last_time) > 5:  # Update candlestick if data is outdated
+            if last_time is None:
+                last_time = 0
+            if abs(time.time() - (last_time / 1000)) > 5:  # Update candlestick if data is outdated
                 db.session.query(Candlestick).filter(
                     and_(Candlestick.strategy_id == bot.strategy.id, Candlestick.symbol == dependence.coin)).delete()
                 for row in dependence_klines:
@@ -52,7 +56,7 @@ def run_bot(bot_id):
                                               low=row[3],
                                               close=row[4],
                                               volume=row[5],
-                                              symbol=dependence.coin+'USDT')
+                                              symbol=dependence.coin)
                     bot.strategy.candlesticks.append(candlestick)
         bot.state = 'active'
         db.session.commit()
@@ -95,6 +99,21 @@ def check_subscription_time():
                 active_subscription.status = 'active'
                 db.session.commit()
     return 'SubscriptionUpdate'
+
+
+@celery.task(name='update_exchange_tickers')
+def update_exchange_tickers():
+    try:
+        client = Spot()
+        info = client.exchange_info().get('symbols')
+        for row in info:
+            ticker = ExchangeTicker(exchange='Binance', ticker=row.get('symbol'))
+            db.session.add(ticker)
+        db.session.commit()
+    except ServerError:
+        return 'ServerError'
+    except ConnectionError:
+        return 'ConnectionError'
 
 
 @celery.task(name='trade_main_loop')

@@ -13,13 +13,10 @@ class TradeLoopInstance:
         self.ws_counter = 0
         self.active_bot_instance = []
         self.creation_time = time.time()
-        self.life_time = 10  # 60*60*4
+        self.life_time = 60*60*4
         self.emit_time = 0
         self.strategies = {1: DefaultStrategy}
         self.local_socketio = local_socketio
-
-    def print_state(self):
-        print(f'C: {self.ws_counter} | WS: {self.active_strategy_instance} | B: {self.active_bot_instance}')
 
     def _kline(self, message):
         if 'k' in message:
@@ -56,12 +53,31 @@ class TradeLoopInstance:
 
     def create_strategy_instance(self, strategy, symbol, interval):
         if [symbol, interval] not in [x.get('params') for x in self.active_strategy_instance]:
-            self.ws.kline(symbol=symbol.lower()+'usdt',
+            self.ws.kline(symbol=symbol.lower(),
                           id=self.ws_counter,
                           interval=interval,
                           callback=self._kline)
             self.ws_counter += 1
-            self.active_strategy_instance.append({'strategy_id': strategy, 'params': [symbol+'USDT', interval]})
+            self.active_strategy_instance.append({'strategy_id': strategy, 'params': [symbol, interval]})
+
+    def emit_data(self, active_bot):
+        for bot in active_bot:
+            trades = bot.trades
+            trades_data = []
+            for trade in trades:
+                trades_data.append([trade.datetime, trade.ticker, trade.type, trade.price, trade.quantity])
+            candlesticks = Candlestick.query.filter(
+                and_(Candlestick.strategy_id == bot.strategy_id, Candlestick.symbol == bot.ticker)).all()
+            candlesticks_data = []
+            candlesticks_datetime = []
+            for candlestick in candlesticks:
+                candlesticks_data.append(candlestick.close)
+                candlesticks_datetime.append(candlestick.datetime)
+            self.local_socketio.emit('trade',
+                                     {'trades_data': trades_data,
+                                      'candlesticks_data': candlesticks_data,
+                                      'candlesticks_datetime': candlesticks_datetime}, room=str(bot.id))
+        self.emit_time += 2
 
     def run_main_loop(self):
         self.ws.start()
@@ -74,14 +90,17 @@ class TradeLoopInstance:
                         self.create_strategy_instance(bot.strategy.id, dependence.coin, dependence.interval)
                     self.active_bot_instance.append(bot.id)
                 elif bot.state == 'active':
-                    self.strategies.get(bot.strategy.id).calculate(bot)
+                    # self.strategies.get(bot.strategy.id).calculate(bot)
+                    pass
                 elif bot.state == 'waiting':
-                    self.strategies.get(bot.strategy.id).waiting(bot)
+                    # self.strategies.get(bot.strategy.id).waiting(bot)
+                    pass
                 elif bot.state == 'stop':
-                    self.strategies.get(bot.strategy.id).stop(bot)
-                # if time.time() - self.creation_time >= self.emit_time:
-                #     self.local_socketio.emit('trade', 'ПРИВЕТ, Я :))', room=str(bot.id))
-                #     self.emit_time += 2
+                    # self.strategies.get(bot.strategy.id).stop(bot)
+                    bot.state = 'disabled'
+                    db.session.commit()
+            if time.time() - self.creation_time >= self.emit_time:
+                self.emit_data(active_bot)
             if time.time() - self.creation_time >= self.life_time:
                 break
         self.ws.close()

@@ -103,7 +103,7 @@ def buy_subscription():
     new_subscription = Subscription(user_id=current_user.id,
                                     status=current_status,
                                     name=request.form.get('subscription_name'),
-                                    time=timedelta(minutes=int(request.form.get('subscription_time'))))
+                                    time=timedelta(days=int(request.form.get('subscription_time'))))
     db.session.add(new_subscription)
     db.session.commit()
     return 'Success', 200
@@ -118,28 +118,61 @@ def bots():
                            bot_list=bot_list)
 
 
+@app.route('/delete_bot', methods=['POST'])
+def delete_bot():
+    if request.form.get('bot_id') != 'None':
+        bot = Bot.query.get(request.form.get('bot_id'))
+        if bot.state == 'disabled':
+            db.session.delete(bot)
+            db.session.commit()
+            return {'bot_id': str(request.form.get('bot_id'))}
+    return {'bot_id': 'None'}
+
+
+@app.route('/get_bot_data', methods=['POST'])
+def get_bot_data():
+    bot = Bot.query.get(request.form.get('bot_id'))
+    bot_strategy = Strategy.query.get(bot.strategy_id)
+    bot_trades = []
+    for row in bot.trades:
+        bot_trades.append([row.datetime, row.ticker, row.type, row.price, row.quantity])
+    return {'strategy_name': bot_strategy.name,
+            'strategy_description': bot_strategy.description,
+            'bot_trades': bot_trades}
+
+
 @app.route('/start_bot', methods=['POST'])
 def start_bot():
-    run_bot.delay(request.form.get('bot_id'))
-    return 'Success', 200
+    if request.form.get('bot_id') != 'None':
+        running_bots_number = Bot.query.filter(
+            and_(Bot.user_id == current_user.id,
+                 or_(Bot.state == 'active', Bot.state == 'waiting'))).count()
+        if running_bots_number < 10:
+            run_bot.delay(request.form.get('bot_id'))
+            return {'bot_id': str(request.form.get('bot_id'))}
+    return {'bot_id': 'None'}
 
 
 @app.route('/soft_stop_bot', methods=['POST'])
 def soft_stop_bot():
-    bot = Bot.query.get(request.form.get('bot_id'))
-    if bot is not None:
-        bot.state = 'waiting'
-        db.session.commit()
-    return 'Success', 200
+    if request.form.get('bot_id') != 'None':
+        bot = Bot.query.get(request.form.get('bot_id'))
+        if bot.state == 'active':
+            bot.state = 'waiting'
+            db.session.commit()
+            return {'bot_id': str(request.form.get('bot_id'))}
+    return {'bot_id': 'None'}
 
 
 @app.route('/hard_stop_bot', methods=['POST'])
 def hard_stop_bot():
-    bot = Bot.query.get(request.form.get('bot_id'))
-    if bot is not None:
-        bot.state = 'stop'
-        db.session.commit()
-    return 'Success', 200
+    if request.form.get('bot_id') != 'None':
+        bot = Bot.query.get(request.form.get('bot_id'))
+        if bot.state == 'active' or bot.state == 'waiting':
+            bot.state = 'stop'
+            db.session.commit()
+            return {'bot_id': str(request.form.get('bot_id'))}
+    return {'bot_id': 'None'}
 
 
 @app.route('/create_bot', methods=['GET', 'POST'])
@@ -147,14 +180,17 @@ def hard_stop_bot():
 def create_bot():
     form = CreateBotForm(connections=current_user.connections)
     if form.validate_on_submit():
-        bot = Bot(user_id=current_user.id,
-                  connect_id=Connect.query.filter_by(api_key=form.connect.data).first().id,
-                  strategy_id=Strategy.query.filter_by(name=form.strategy.data).first().id,
-                  ticker=form.ticker.data,
-                  deposit=form.deposit.data)
-        db.session.add(bot)
-        db.session.commit()
-        flash('Congratulations, bot add!')
+        if len(current_user.bots) < 50:
+            bot = Bot(user_id=current_user.id,
+                      connect_id=Connect.query.filter_by(api_key=form.connect.data).first().id,
+                      strategy_id=Strategy.query.filter_by(name=form.strategy.data).first().id,
+                      ticker=form.ticker.data,
+                      deposit=form.deposit.data)
+            db.session.add(bot)
+            db.session.commit()
+            flash('Congratulations, bot add!')
+        else:
+            flash('Bots limit: 50!')
         return redirect(url_for('bots'))
     return render_template('create_bot.html', title='Create Bot', form=form)
 
@@ -251,8 +287,7 @@ def connection_ping():
 def connection_status():
     task_id = request.args.get('task_id')
     task = ping_connection.AsyncResult(task_id)
-    response = {'state': task.state, 'result': task.result}
-    return response
+    return {'state': task.state, 'result': task.result}
 
 
 @app.before_request

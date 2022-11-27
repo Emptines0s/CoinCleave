@@ -5,7 +5,7 @@ $(document).ready(function() {
         url: ping_url,
         success: function(request) {
             if (request.state != 'PENDING') {
-                document.getElementById(connection_id).innerHTML = request.result;
+                $('#' + connection_id).find('.conn-ping-state').text(request.result)
             }
             else {
                 setTimeout(update_connection_status, 1000, ping_url, connection_id);
@@ -18,9 +18,9 @@ $(document).ready(function() {
     $.ajax({
       type: 'POST',
       url: '/connection_ping',
-      data: {'connection_id': $(this).parent().attr('id')},
+      data: {'connection_id': $(this).parent().parent().attr('id')},
       success: function(request) {
-          $("#" + request.connection_id).text(request.Location);
+          $('#' + request.connection_id).find('.conn-ping-state').text('Ping connection...')
           update_connection_status(request.Location, request.connection_id);
       },
       error: function() {
@@ -30,11 +30,10 @@ $(document).ready(function() {
   });
 
   $('.delete-button').click(function() {
-    alert('123123');
     $.ajax({
       type: 'POST',
       url: '/delete_connection',
-      data: {'connection_id': $(this).parent().attr('id')},
+      data: {'connection_id': $(this).parent().parent().attr('id')},
       success: function(request) {
         $("#" + request.connection_id).remove();
       }

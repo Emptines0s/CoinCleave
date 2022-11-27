@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Привет, это индекс!</h1>
+<div class="index-main-body">
+    <div class="index-gradient">
+        <div class="index-label">CoinCleave</div>
+        <div class="index-description">
+            Это платформа для запуска алгоритмических трэйдинг ботов,<br>
+            на вашем аккаунте криптобиржы.
+        </div>
+        <div class="index-description">
+            В рамках единой подписки вы можете создавать до 50 ботов.<br>
+            Сейчас, на старте нашего приложения, подписка бесплатна.
+        </div>
+        <div class="index-description">
+            Пройдите процесс быстрой регистрации,<br>
+            и пользуйтесь всеми возможностями платформы сразу.
+            <form action="{{ url_for('register') }}" method="get">
+                <button type="submit" class="register-button">Зарегистрироваться</button>
+            </form>
+        </div>
+        <div class="index-description">
+            Хотите узнать о возможностях платформы подробнее,<br>
+            или остались вопросы?
+            <form action="{{ url_for('faq', target='None') }}" method="get">
+                <button type="submit" class="faq-button">Подробнее</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

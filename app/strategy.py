@@ -1,27 +1,37 @@
 from app.models import Candlestick, Trade
 from app import db
-# import talib as ta
+import talib as ta
 import pandas as pd
 from sqlalchemy import and_, func
-from app.tasks.task2 import place_order, tessta
+from app.tasks.task2 import place_order
 
 
 class DefaultStrategy:
     @staticmethod
     def calculate(bot):
-        # df = DefaultStrategy.create_df(bot)
-        # # df['RSI'] = pd.to_numeric(ta.RSI(df['Close'], 14))
-        # last_rsi_value = df.iloc[-1]['RSI']
-        # last_trade = DefaultStrategy.get_trade(bot)
+        # Обьявление и проверка осциллятора Чайкина
+        last_trade = DefaultStrategy.get_trade(bot)
+        df = DefaultStrategy.create_df(bot)
+        df['AD'] = ta.ADOSC(df['High'], df['Low'], df['Close'], df['Volume'])
+        df = df.astype({'AD': float})
+        current_ad = df.iloc[-2]['AD']
+        before_current_ad = df.iloc[-3]['AD']
+        ad_data_frame = df[df['AD'] > df['AD'].max() / 20]
+        ad_data_frame = ad_data_frame.loc[:, 'AD']
 
-        print('CALCULATE')
-        # tessta.delay(bot.id, 'BUY', bot.deposit)
-        # if last_rsi_value <= 100:
-        #     if last_trade.type == 'SELL' or not last_trade:
-        #         tessta.delay(bot.id, 'BUY', bot.deposit)
-        # elif last_rsi_value >= 100:
-        #     if last_trade.type == 'BUY':
-        #         tessta.delay(bot.id, 'SELL', last_trade.quantity)
+        # Проверка пересечения кривой осциллятора нуля
+        if current_ad > 0 and before_current_ad < 0:
+            for row in df.iloc[-10:-2]['AD']:
+                if row < -abs(ad_data_frame.mean()):
+                    if last_trade.type == 'SELL' or not last_trade:
+                        place_order.delay(bot.id, 'BUY', bot.deposit)
+                        break
+        elif current_ad < 0 and before_current_ad > 0:
+            for row in df.iloc[-10:-2]['AD']:
+                if row < abs(ad_data_frame.mean()):
+                    if last_trade.type == 'BUY':
+                        place_order.delay(bot.id, 'SELL', last_trade.quantity)
+                        break
 
     @staticmethod
     def waiting(bot):
@@ -46,8 +56,8 @@ class DefaultStrategy:
             and_(Candlestick.strategy_id == bot.strategy_id, Candlestick.symbol == bot.ticker+'USDT')).all()
         data = []
         for row in candlesticks:
-            data.append([row.open, row.high, row.low, row.close])
-        df = pd.DataFrame(data, columns=['Open', 'High', 'Low', 'Close'])
+            data.append([row.high, row.low, row.close, row.volume])
+        df = pd.DataFrame(data, columns=['High', 'Low', 'Close', 'Volume'])
         return df
 
     @staticmethod

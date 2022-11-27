@@ -13,7 +13,7 @@
         <div class="conn-form-box">
             {{ form.hidden_tag() }}
             <div class="conn-form-el">
-                {{ form.exchange }}<br>
+                {{ form.exchange(class_="form-exchange") }}<br>
                 {% for error in form.exchange.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
@@ -30,15 +30,21 @@
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </div>
-            <div class="conn-form-el">{{ form.submit() }}</div>
+            <div class="conn-form-el">{{ form.submit(class_="form-add-conn") }}</div>
         </div>
     </form>
     <div class="conn-list-title">Ваши подключения</div>
     {% for connect in connect_list %}
         <div class="conn-unit" id="{{ connect.id }}" >
-            {{ connect.exchange }}, {{ connect.api_key }}
-            <button class="ping-button">Проверить</button>
-            <button class="delete-button">Удалить</button>
+            <div class="conn-line">
+                <div class="conn-api">{{ connect.api_key }}</div>
+            </div>
+            <div class="conn-line">
+                <div class="conn-exchange">{{ connect.exchange }}</div>
+                <div class="conn-ping-state"></div>
+                <button class="ping-button">Проверить</button>
+                <button class="delete-button">Удалить</button>
+            </div>
         </div>
     {% endfor %}
 </div>
