@@ -90,15 +90,13 @@ class TradeLoopInstance:
                         self.create_strategy_instance(bot.strategy.id, dependence.coin, dependence.interval)
                     self.active_bot_instance.append(bot.id)
                 elif bot.state == 'active':
-                    # self.strategies.get(bot.strategy.id).calculate(bot)
+                    self.strategies.get(bot.strategy.id).calculate(bot)
                     pass
                 elif bot.state == 'waiting':
-                    # self.strategies.get(bot.strategy.id).waiting(bot)
+                    self.strategies.get(bot.strategy.id).waiting(bot)
                     pass
                 elif bot.state == 'stop':
-                    # self.strategies.get(bot.strategy.id).stop(bot)
-                    bot.state = 'disabled'
-                    db.session.commit()
+                    self.strategies.get(bot.strategy.id).stop(bot)
             if time.time() - self.creation_time >= self.emit_time:
                 self.emit_data(active_bot)
             if time.time() - self.creation_time >= self.life_time:
