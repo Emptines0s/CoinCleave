@@ -53,7 +53,7 @@ class DefaultStrategy:
     @staticmethod
     def create_df(bot):
         candlesticks = Candlestick.query.filter(
-            and_(Candlestick.strategy_id == bot.strategy_id, Candlestick.symbol == bot.ticker+'USDT')).all()
+            and_(Candlestick.strategy_id == bot.strategy_id, Candlestick.symbol == bot.ticker)).all()
         data = []
         for row in candlesticks:
             data.append([row.high, row.low, row.close, row.volume])
