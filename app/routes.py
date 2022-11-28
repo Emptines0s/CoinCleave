@@ -30,8 +30,8 @@ def login():
         activity = Activity(user_id=current_user.id, last_time=datetime.utcnow(), last_ip=request.remote_addr)
         db.session.add(activity)
         db.session.commit()
-        if current_user.settings.ip_alert is True:
-            send_new_ip_alert_email.delay(current_user.email, activity.id)
+        if user.settings.ip_alert is True:
+            send_new_ip_alert_email.delay(user.email, activity.id)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             return redirect(url_for('index'))

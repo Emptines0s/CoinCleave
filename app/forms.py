@@ -43,8 +43,8 @@ class ConnectForm(FlaskForm):
 
 
 class CreateBotForm(FlaskForm):
-    connect = SelectField('Подключение')
-    strategy = SelectField('Стратегия')
+    connect = SelectField('Подключение', validators=[DataRequired()])
+    strategy = SelectField('Стратегия', validators=[DataRequired()])
     ticker = StringField('Торговая пара', validators=[DataRequired()])
     deposit = IntegerField('Депозит', validators=[DataRequired(), NumberRange(min=10, max=2147483647)])
     submit = SubmitField('Создать')

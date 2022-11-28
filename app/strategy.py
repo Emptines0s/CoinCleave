@@ -36,7 +36,7 @@ class DefaultStrategy:
     @staticmethod
     def waiting(bot):
         last_trade = DefaultStrategy.get_trade(bot)
-        if last_trade.type == 'SELL':
+        if last_trade.type == 'SELL' or not last_trade:
             bot.state = 'disabled'
             db.session.commit()
         elif last_trade.type == 'BUY':
