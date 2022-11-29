@@ -36,7 +36,7 @@
 
 Картиночки для понимания:
 
-![image](https://user-images.githubusercontent.com/84917008/204121302-3d1c6524-0644-4012-8f27-3497c9199fb1.png)
+![image](https://user-images.githubusercontent.com/84917008/204534890-7fadb990-062b-498f-b214-d5caee821e45.png)
 
 ![image](https://user-images.githubusercontent.com/84917008/204123296-d69ab737-6314-4ce2-bc8b-2aebe29ff3f8.png)
 
