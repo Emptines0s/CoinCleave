@@ -18,7 +18,7 @@ $(document).ready(function() {
     }
     let datetime_arr = new Array();
     for (let i = 0; i < msg.candlesticks_datetime.length; i++) {
-      var datetime_value = new Date(msg.candlesticks_datetime[i]).toLocaleDateString('en-GB');
+      var datetime_value = new Date(msg.candlesticks_datetime[i]).toLocaleTimeString('en-GB');
       datetime_arr.push(datetime_value);
     }
     trade_chart.data.labels = datetime_arr;
@@ -130,49 +130,37 @@ $(document).ready(function() {
 
   $('.start_bot').hover(
     function() {
-      $('.bot-buttons-description').css('background', 'linear-gradient(to right, rgb(80, 216, 90), transparent)');
-      $('.bot-buttons-description').css('padding-left', '20px');
-      $('.bot-buttons-description').css('transition-property', 'all');
+      $('.bot-buttons-description').css('background', 'rgb(80, 216, 90)');
       $('.bot-buttons-description').html(
       'Запускает бота если он ещё не запущен. <br> Бот будет работать до тех пор, пока вы его не остановите.');
+      $('.bot-buttons-description').fadeIn();
     },
     function() {
-      $('.bot-buttons-description').css('background', 'transparent');
-      $('.bot-buttons-description').css('padding-left', '10px');
-      $('.bot-buttons-description').css('transition-property', 'none');
-      $('.bot-buttons-description').html('');
+      $('.bot-buttons-description').hide();
     }
   );
 
   $('.soft_stop').hover(
     function() {
-      $('.bot-buttons-description').css('background', 'linear-gradient(to right, rgb(238, 238, 18), transparent)');
-      $('.bot-buttons-description').css('padding-left', '20px');
-      $('.bot-buttons-description').css('transition-property', 'all');
+      $('.bot-buttons-description').css('background', 'rgb(238, 238, 18)');
       $('.bot-buttons-description').html(
       'Переводит бота в режим ожидания. <br> Бот будет работать до тех пор, пока не закроет текущую сделку.');
+      $('.bot-buttons-description').fadeIn();
     },
     function() {
-      $('.bot-buttons-description').css('background', 'transparent');
-      $('.bot-buttons-description').css('padding-left', '10px');
-      $('.bot-buttons-description').css('transition-property', 'none');
-      $('.bot-buttons-description').html('');
+      $('.bot-buttons-description').hide();
     }
   );
 
   $('.hard_stop').hover(
     function() {
-      $('.bot-buttons-description').css('background', 'linear-gradient(to right, rgb(240, 61, 61), transparent)');
-      $('.bot-buttons-description').css('padding-left', '20px');
-      $('.bot-buttons-description').css('transition-property', 'all');
+      $('.bot-buttons-description').css('background', 'rgb(240, 61, 61)');
       $('.bot-buttons-description').html(
       'Принудительно останавливает работу бота. <br> Бот закрывает текущую сделку немедленно, если она есть.');
+      $('.bot-buttons-description').fadeIn();
     },
     function() {
-      $('.bot-buttons-description').css('background', 'transparent');
-      $('.bot-buttons-description').css('padding-left', '10px');
-      $('.bot-buttons-description').css('transition-property', 'none');
-      $('.bot-buttons-description').html('');
+      $('.bot-buttons-description').hide();
     }
   );
 

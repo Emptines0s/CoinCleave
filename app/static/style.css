@@ -292,6 +292,8 @@
 
 .bot_buttons {
   display: flex;
+  width: 478px;
+  margin-bottom: 10px;
 }
 
 .activity-block-label {
@@ -667,17 +669,15 @@
 }
 
 .bot-buttons-description {
-  margin-left: 35px;
-  margin-top: 10px;
-  height: 60px;
-  background: transparent;
-  border-radius: 30px;
-  padding-left: 10px;
-  padding-top: 4px;
+  display: none;
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 42px;
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 1px;
   padding-bottom: 4px;
-  width: 700px;
-  word-wrap: break-word;
-  transition: padding 0.5s ease;
 }
 
 .bot-description-block {

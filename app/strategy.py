@@ -23,7 +23,7 @@ class DefaultStrategy:
         if current_ad > 0 and before_current_ad < 0:
             for row in df.iloc[-10:-2]['AD']:
                 if row < -abs(ad_data_frame.mean()):
-                    if last_trade.type == 'SELL' or not last_trade:
+                    if last_trade.type == 'SELL' or last_trade is None:
                         place_order.delay(bot.id, 'BUY', bot.deposit)
                         break
         elif current_ad < 0 and before_current_ad > 0:
@@ -36,7 +36,7 @@ class DefaultStrategy:
     @staticmethod
     def waiting(bot):
         last_trade = DefaultStrategy.get_trade(bot)
-        if last_trade.type == 'SELL' or not last_trade:
+        if last_trade.type == 'SELL' or last_trade is None:
             bot.state = 'disabled'
             db.session.commit()
         elif last_trade.type == 'BUY':
@@ -45,7 +45,7 @@ class DefaultStrategy:
     @staticmethod
     def stop(bot):
         last_trade = DefaultStrategy.get_trade(bot)
-        if last_trade.type == 'BUY':
+        if last_trade is not None and last_trade.type == 'BUY':
             place_order.delay(bot.id, 'SELL', last_trade.quantity)
         bot.state = 'disabled'
         db.session.commit()
