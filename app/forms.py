@@ -57,8 +57,7 @@ class CreateBotForm(FlaskForm):
 
     def validate_ticker(self, ticker):
         selected_exchange = Connect.query.filter_by(api_key=self.connect.data).first().exchange
-        print(selected_exchange)
         exchange_tickers = db.session.query(ExchangeTicker.ticker).filter(
             ExchangeTicker.exchange == selected_exchange).all()
-        if ticker.data not in [ticker[0] for ticker in exchange_tickers]:
+        if ticker.data.upper() not in [ticker[0] for ticker in exchange_tickers]:
             raise ValidationError('Wrong ticker')

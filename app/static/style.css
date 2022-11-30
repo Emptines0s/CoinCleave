@@ -63,22 +63,32 @@
   overflow: hidden;
 }
 
+.unit:nth-child(2) {
+    width: 75px;
+}
+
+.unit:nth-child(3) {
+    width: 75px;
+}
+
+.unit:nth-child(4) {
+    width: 65px;
+}
+
+.unit:nth-child(5) {
+    width: 65px;
+}
+
+.unit:nth-child(6) {
+    width: 80px;
+}
+
 .line {
   display: flex;
   border-radius: 27px;
   padding-left: 6px;
   cursor: pointer;
 }
-
-.unit:nth-child(2) {
-    width: 80px;
-}
-
-
-.unit:nth-child(6) {
-    width: 80px;
-}
-
 
 .line:hover {
   background: linear-gradient(to right, pink, transparent);
@@ -1003,4 +1013,41 @@
   width: 410px;
   display: flex;
   flex-direction: row-reverse;
+}
+
+.flash-list {
+  list-style-type: none;
+  white-space: nowrap;
+  padding-left: 0px;
+  position: absolute;
+}
+
+.flash-msg {
+  font-size: 16px;
+  line-height: 1.9em;
+  height: 2em;
+}
+
+.flash-box {
+  background: linear-gradient(90deg, rgb(80, 216, 90), gold);
+  border-radius: 0.5em;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.flash-close {
+  padding-left: 6px;
+  font-size: 22px;
+  line-height: 28px;
+  height: 32px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.flash-close:hover {
+  color: white;
 }

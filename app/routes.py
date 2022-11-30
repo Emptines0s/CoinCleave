@@ -184,7 +184,7 @@ def create_bot():
             bot = Bot(user_id=current_user.id,
                       connect_id=Connect.query.filter_by(api_key=form.connect.data).first().id,
                       strategy_id=Strategy.query.filter_by(name=form.strategy.data).first().id,
-                      ticker=form.ticker.data,
+                      ticker=form.ticker.data.upper(),
                       deposit=form.deposit.data)
             db.session.add(bot)
             db.session.commit()

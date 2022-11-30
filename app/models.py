@@ -91,7 +91,7 @@ class Strategy(db.Model):
 class Dependence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     strategy_id = db.Column(db.Integer, db.ForeignKey('strategy.id'))
-    coin = db.Column(db.String(8))
+    coin = db.Column(db.String(15))
     interval = db.Column(db.String(3))
     limit = db.Column(db.Integer)
 
@@ -101,7 +101,7 @@ class Bot(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     connect_id = db.Column(db.Integer, db.ForeignKey('connect.id'))
     strategy_id = db.Column(db.Integer, db.ForeignKey('strategy.id'))
-    ticker = db.Column(db.String(8))
+    ticker = db.Column(db.String(15))
     deposit = db.Column(db.Integer)
     pnl = db.Column(db.Float)
     state = db.Column(db.String(15), default='disabled')
@@ -111,7 +111,7 @@ class Bot(db.Model):
 class Candlestick(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     strategy_id = db.Column(db.Integer, db.ForeignKey('strategy.id'))
-    symbol = db.Column(db.String(8))
+    symbol = db.Column(db.String(15))
     datetime = db.Column(db.BigInteger)
     open = db.Column(db.String(20))
     high = db.Column(db.String(20))
@@ -125,7 +125,7 @@ class Trade(db.Model):
     bot_id = db.Column(db.Integer, db.ForeignKey('bot.id'))
     order_id = db.Column(db.Integer)
     datetime = db.Column(db.BigInteger)
-    ticker = db.Column(db.String(8))
+    ticker = db.Column(db.String(15))
     type = db.Column(db.String(20))
     price = db.Column(db.Float)
     quantity = db.Column(db.Float)
