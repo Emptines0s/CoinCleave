@@ -24,7 +24,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Неверный email или пароль')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         activity = Activity(user_id=current_user.id, last_time=datetime.utcnow(), last_ip=request.remote_addr)
@@ -57,7 +57,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Поздравляем, вы успешно зарегистрировались!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -188,9 +188,9 @@ def create_bot():
                       deposit=form.deposit.data)
             db.session.add(bot)
             db.session.commit()
-            flash('Congratulations, bot add!')
+            flash('Бот успешно создан')
         else:
-            flash('Bots limit: 50!')
+            flash('Превышен лимит ботов: 50!')
         return redirect(url_for('bots'))
     return render_template('create_bot.html', title='Create Bot', form=form)
 
@@ -227,7 +227,7 @@ def connections():
                           secret_key=form.secret_key.data)
         db.session.add(connect)
         db.session.commit()
-        flash('Congratulations, connections add!')
+        flash('Подключение успешно добавлено')
         return redirect(url_for('connections'))
     return render_template('connections.html',
                            title='Connections',
@@ -266,7 +266,7 @@ def reset_password_request():
             token = user.get_reset_password_token()
             send_password_reset_email.delay(form.email.data,
                                             url_for('reset_password', token=token, _external=True))
-        flash('Check your email for the instructions to reset your password')
+        flash('На ваш email отправлена инструкция по сбросу пароля.')
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',
                            title='Reset Password', form=form)
@@ -283,7 +283,7 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash('Ваш пароль успешно обновлён')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 

@@ -21,7 +21,7 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            raise ValidationError('На этот email уже зарегистрирован аккаунт')
 
 
 class ResetPasswordRequestForm(FlaskForm):
@@ -36,9 +36,9 @@ class ResetPasswordForm(FlaskForm):
 
 
 class ConnectForm(FlaskForm):
-    exchange = SelectField('Exchange', choices=['Binance'])
-    api_key = StringField('Api Key', validators=[DataRequired()])
-    secret_key = StringField('Secret Key', validators=[DataRequired()])
+    exchange = SelectField(choices=['Binance'])
+    api_key = StringField(validators=[DataRequired()])
+    secret_key = StringField(validators=[DataRequired()])
     submit = SubmitField('Добавить')
 
 
@@ -60,4 +60,4 @@ class CreateBotForm(FlaskForm):
         exchange_tickers = db.session.query(ExchangeTicker.ticker).filter(
             ExchangeTicker.exchange == selected_exchange).all()
         if ticker.data.upper() not in [ticker[0] for ticker in exchange_tickers]:
-            raise ValidationError('Wrong ticker')
+            raise ValidationError('Неверная торговая пара')

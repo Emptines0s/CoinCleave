@@ -1120,3 +1120,110 @@
   padding-left: 18px;
   margin-top: 30px;
 }
+
+.login-label {
+  font-size: 36px;
+  display: inline-block;
+}
+
+.login-gradient {
+  margin-top: 3px;
+  padding-top: 12px;
+  padding-left: 30px;
+  background: linear-gradient(140deg, gold, transparent 38%, transparent 74%, violet);
+  padding-bottom: 18px;
+  border-radius: 40px;
+  padding-right: 30px;
+}
+
+.login-form-el {
+  margin-bottom: 8px;
+}
+
+.login-remember {
+  margin-bottom: 0;
+  height: 1.6em;
+  line-height: 1.6em;
+}
+
+.login-url {
+  color: black;
+  text-decoration: none;
+}
+
+.login-url:hover {
+  color: gray;
+  text-decoration: none;
+}
+
+.login-url:visited {
+  color: gray;
+  text-decoration: none;
+}
+
+.login-button {
+  background: rgb(219, 187, 241);
+  border: 0;
+  border-radius: 5px;
+}
+
+.login-button:hover {
+  background: rgb(191, 134, 230);
+}
+
+.login-button:active {
+  background-color: rgb(223, 196, 242);
+  outline: none;
+}
+
+.login-button:focus {
+  outline: none;
+}
+
+.login-form-el-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.login-link-button {
+  background: rgb(255, 226, 66);
+  border: 0;
+  border-radius: 5px;
+}
+
+.login-link-button:hover {
+  background: rgb(255, 223, 45);
+  border: 0;
+  border-radius: 5px;
+}
+
+.login-link-button:active {
+  background: rgb(255, 230, 87);
+  outline: none;
+}
+
+.login-link-button:focus {
+  outline: none;
+}
+
+.login-button-mg {
+  background: rgb(219, 187, 241);
+  border: 0;
+  border-radius: 5px;
+  margin-top: 4px;
+}
+
+.login-button-mg:hover {
+  background: rgb(191, 134, 230);
+}
+
+.login-button-mg:active {
+  background-color: rgb(223, 196, 242);
+  outline: none;
+}
+
+.login-button-mg:focus {
+  outline: none;
+}
