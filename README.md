@@ -1,7 +1,7 @@
 # CoinCleave
 Веб приложение на Flask. С использованием Flask-SocketIO, Celery, RabbitMQ, Binance-connector (SDK) и т.д...
-
-![image](https://user-images.githubusercontent.com/84917008/204120527-a075be0c-0f1c-4502-a50a-102c97d57902.png)
+Главная страница:
+![image](https://user-images.githubusercontent.com/84917008/204903488-dcbd5eb2-4fe4-45e8-b933-9bded7279b8c.png)
 
 На беке тут Flask, расширяющие модули:
 1) Flask-Login для аутентификации пользователей
@@ -14,7 +14,7 @@
 База данных PostgreSQL.
 Архитектура БД (схема днных):
 
-![image](https://user-images.githubusercontent.com/84917008/204121447-3b0d26d5-07b7-47c5-ae2f-8ae7dc6ad725.png)
+![image](https://user-images.githubusercontent.com/84917008/204903418-ed66625a-6779-4c73-95c4-8fa4c9b48944.png)
 
 Для I/O нагруженных задач, например, постучать на Binance за данными, использовал Celery. Такие задачи упаковывал в таски.
 Так же использовал Celery для фоновых периодических задач: Цикл в котором крутяться боты (его нужно было без вариантов останавливать и запускать заново, т.к.
