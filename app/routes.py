@@ -195,6 +195,26 @@ def create_bot():
     return render_template('create_bot.html', title='Create Bot', form=form)
 
 
+@app.route('/get_connect_info', methods=['POST'])
+def get_connect_info():
+    if request.form.get('connect_api') != '':
+        info = db.session.query(Connect.exchange).filter(
+            Connect.api_key == request.form.get('connect_api')).scalar()
+    else:
+        info = ''
+    return {'info': info}
+
+
+@app.route('/get_strategy_info', methods=['POST'])
+def get_strategy_info():
+    if request.form.get('strategy_name') != '':
+        info = db.session.query(Strategy.description).filter(
+            Strategy.name == request.form.get('strategy_name')).scalar()
+    else:
+        info = ''
+    return {'info': info}
+
+
 @app.route('/connections', methods=['GET', 'POST'])
 @login_required
 def connections():

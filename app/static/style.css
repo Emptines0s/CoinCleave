@@ -177,7 +177,7 @@
 
 ._30d-gradient {
   width: 120px;
-  aspect-ratio: 1 / 1;
+  height: 120px;
   position: relative;
   background: linear-gradient(45deg, blue 0%, green 100%);
   border-radius: 10px;
@@ -189,7 +189,7 @@
 }
 ._60d-gradient {
   width: 120px;
-  aspect-ratio: 1 / 1;
+  height: 120px;
   position: relative;
   background: linear-gradient(45deg, violet 0%, blue 100%);
   border-radius: 10px;
@@ -202,7 +202,7 @@
 
 ._180d-gradient {
   width: 120px;
-  aspect-ratio: 1 / 1;
+  height: 120px;
   position: relative;
   background: linear-gradient(45deg, gold 0%, violet 100%);
   border-radius: 10px;
@@ -390,7 +390,7 @@
   background: white;
   position: relative;
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
   margin-top: 40px;
@@ -417,6 +417,7 @@
 .conn-form-el {
   background: transparent;
   align-self: center;
+  margin-bottom: 10px;
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -787,24 +788,30 @@
 }
 
 .create-bot-form-box {
+  display: flex;
+  flex-direction: column;
   background: white;
   position: relative;
+  align-self: start;
   padding-left: 14px;
   padding-top: 6px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  padding-bottom: 6px;
+  padding-right: 14px;
+  margin-top: 8px;
+  margin-bottom: 30px;
   align-items: center;
   justify-content: center;
   border: 15px solid transparent;
   border-radius: 24px;
   background-clip: padding-box;
+
 }
 
 .create-bot-form-box::after {
   position: absolute;
   top: -15px; bottom: -15px;
   left: -15px; right: -15px;
-  background: linear-gradient(150deg, violet, transparent 50%);
+  background: linear-gradient(145deg, violet 0%, transparent 50%);
   content: '';
   z-index: -1;
   border-radius: 16px;
@@ -833,13 +840,31 @@
 .security-button {
   background: rgb(255, 198, 95);
   border: 0;
+  margin-bottom: 2px;
   border-radius: 5px;
+}
+
+.security-button:active {
+  outline: none;
+}
+
+.security-button:focus {
+  outline: none;
 }
 
 .activity_info {
   background: rgb(255, 198, 95);
   border: 0;
+  margin-top: 2px;
   border-radius: 5px;
+}
+
+.activity_info:active {
+  outline: none;
+}
+
+.activity_info:focus {
+  outline: none;
 }
 
 .form-exchange {
@@ -957,7 +982,7 @@
 
 .logo {
   margin-left: 15px;
-  width: 395px;
+  margin-right: 231px;
   font-family: 'Alexandria', serif; font-size: 30px;
   color: black;
   text-decoration: none;
@@ -1010,8 +1035,9 @@
 }
 
 .menu-right-block {
-  width: 410px;
+  width: 411px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row-reverse;
 }
 
@@ -1050,4 +1076,47 @@
 
 .flash-close:hover {
   color: white;
+}
+
+.connect-description {
+}
+
+.strategy-description {
+  max-height: 96px;
+  width: 660px;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+}
+
+.create-bot-form-el {
+  background: transparent;
+  align-self: start;
+  margin-bottom: 8px;
+}
+
+.form-create-bot {
+  background: rgb(247, 181, 246);
+  border: 0;
+  border-radius: 5px;
+}
+
+.form-create-bot:hover {
+  background: rgb(241, 129, 238);
+}
+
+.form-create-bot:active {
+  background-color: rgb(248, 190, 247);
+  outline: none;
+}
+.form-create-bot:focus {
+  outline: none;
+}
+
+.create-bot-block-label {
+  font-size: 25px;
+  color: violet;
+  word-break: break-all;
+  align-self: start;
+  padding-left: 18px;
+  margin-top: 30px;
 }

@@ -50,40 +50,40 @@
         {% endfor %}
     </div>
 </div>
-    <script>
-        $(document).ready(function() {
-          var True = true;
-          var False = false;
-          $('#ip_alert').prop('checked', {{ user_settings.ip_alert }});
-          $('#subscription_alert').prop('checked', {{ user_settings.subscription_alert }});
-          $('#news_alert').prop('checked', {{ user_settings.news_alert }});
-          $('#bots_report').prop('checked', {{ user_settings.bots_report }});
+<script>
+    $(document).ready(function() {
+      var True = true;
+      var False = false;
+      $('#ip_alert').prop('checked', {{ user_settings.ip_alert }});
+      $('#subscription_alert').prop('checked', {{ user_settings.subscription_alert }});
+      $('#news_alert').prop('checked', {{ user_settings.news_alert }});
+      $('#bots_report').prop('checked', {{ user_settings.bots_report }});
 
-          $('input:checkbox').click(function() {
-            $.ajax({
-              type: 'POST',
-              url: '/change_setting',
-              data: {'setting_type': this.id, 'setting_value': $(this).is(':checked')},
-              error: function() {
-                  alert('Unexpected error');
-              }
-            });
-          });
-
-          $(document).click(function(e){
-            if($(e.target).closest('.popup_activity_list').length == 0 && $('.popup_activity_list').hasClass("active")) {
-              $('.popup_black_back').fadeOut();
-              $('.popup_activity_list').fadeOut();
-              $('.popup_activity_list').removeClass("active");
-            }
-          });
-
-          $('.activity_info').click(function() {
-            $('.popup_black_back').fadeIn();
-            $('.popup_activity_list').fadeIn(function() {
-              $('.popup_activity_list').addClass("active");
-            });
-          });
+      $('input:checkbox').click(function() {
+        $.ajax({
+          type: 'POST',
+          url: '/change_setting',
+          data: {'setting_type': this.id, 'setting_value': $(this).is(':checked')},
+          error: function() {
+              alert('Unexpected error');
+          }
         });
-    </script>
+      });
+
+      $(document).click(function(e){
+        if($(e.target).closest('.popup_activity_list').length == 0 && $('.popup_activity_list').hasClass("active")) {
+          $('.popup_black_back').fadeOut();
+          $('.popup_activity_list').fadeOut();
+          $('.popup_activity_list').removeClass("active");
+        }
+      });
+
+      $('.activity_info').click(function() {
+        $('.popup_black_back').fadeIn();
+        $('.popup_activity_list').fadeIn(function() {
+          $('.popup_activity_list').addClass("active");
+        });
+      });
+    });
+</script>
 {% endblock %}

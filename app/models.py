@@ -81,7 +81,7 @@ class Strategy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40))
     interval = db.Column(db.String(3))
-    description = db.Column(db.String(255))
+    description = db.Column(db.Text)
     limit = db.Column(db.Integer)
     bots = db.relationship('Bot', backref='strategy')
     dependencies = db.relationship('Dependence', backref='strategy')
