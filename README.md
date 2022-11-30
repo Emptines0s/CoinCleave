@@ -39,9 +39,9 @@
 
 Рабочий экран с ботами:
 ![image](https://user-images.githubusercontent.com/84917008/204903895-67918e2e-7f23-4c32-8bbb-a16cec9675ec.png)
-
+Экран с подключениями:
 ![image](https://user-images.githubusercontent.com/84917008/204123296-d69ab737-6314-4ce2-bc8b-2aebe29ff3f8.png)
-
+Экран с FAQ:
 ![image](https://user-images.githubusercontent.com/84917008/204121325-51e0bece-9038-48a3-92f2-67e96e91cdab.png)
 Экран настроек:
 ![image](https://user-images.githubusercontent.com/84917008/204904357-40f44efa-4079-44b0-afe4-6b9a45f22f2a.png)
