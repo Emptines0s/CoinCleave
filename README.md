@@ -43,9 +43,11 @@
 ![image](https://user-images.githubusercontent.com/84917008/204123296-d69ab737-6314-4ce2-bc8b-2aebe29ff3f8.png)
 
 ![image](https://user-images.githubusercontent.com/84917008/204121325-51e0bece-9038-48a3-92f2-67e96e91cdab.png)
-
-![image](https://user-images.githubusercontent.com/84917008/204121347-44acfc0c-435f-4cce-9d34-6b63f33ceff8.png)
-
+Экран настроек:
+![image](https://user-images.githubusercontent.com/84917008/204904357-40f44efa-4079-44b0-afe4-6b9a45f22f2a.png)
+Экран подписок:
 ![image](https://user-images.githubusercontent.com/84917008/204121375-355c5f34-ac44-4bf5-ba96-083a6ee05168.png)
+Экран подписок (popup список покупок):
+![image](https://user-images.githubusercontent.com/84917008/204904579-fa203830-e57d-4500-9d1b-c7bb8f76cb89.png)
 
 
