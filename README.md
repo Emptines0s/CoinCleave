@@ -1,5 +1,5 @@
 # CoinCleave
---Актуальный адрес сайта https://cc6a-31-134-188-102.eu.ngrok.io/
+--Актуальный адрес сайта https://e94e-31-134-188-102.eu.ngrok.io
 
 Веб приложение на Flask. С использованием Flask-SocketIO, Celery, RabbitMQ, Binance-connector (SDK) и т.д...
 
