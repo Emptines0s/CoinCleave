@@ -91,10 +91,8 @@ class TradeLoopInstance:
                     self.active_bot_instance.append(bot.id)
                 elif bot.state == 'active':
                     self.strategies.get(bot.strategy.id).calculate(bot)
-                    pass
                 elif bot.state == 'waiting':
                     self.strategies.get(bot.strategy.id).waiting(bot)
-                    pass
                 elif bot.state == 'stop':
                     self.strategies.get(bot.strategy.id).stop(bot)
             if time.time() - self.creation_time >= self.emit_time:

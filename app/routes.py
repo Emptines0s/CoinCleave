@@ -233,7 +233,7 @@ def connections():
                            title='Connections',
                            form=form,
                            connect_list=connect_list,
-                           server_ip=request.host.split(':')[0])
+                           server_ip='31.134.188.102')
 
 
 @app.route('/settings', methods=['GET', 'POST'])
